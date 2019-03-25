@@ -18,20 +18,21 @@ namespace Solution2
         static string Encipher(string str, int num)
         {
             string res = "";
-            foreach (char c in str)
+            int i = 0;
+            var matches = Regex.Matches(str, @"([A-Z])|([a-z])");
+            foreach(Match m in matches)
             {
-                Match m = Regex.Match(c.ToString(), @"([A-Z])|([a-z])");
-                if (m.Success)
-                {
-                    int offset = 0;
-                    if (m.Groups[1].Success) offset = 65;
-                    if (m.Groups[2].Success) offset = 97;
-                    res += (char)((((c + num) - offset) % 26) + offset);
+                char letter = m.Value[0];
+                while(letter != str[i])
+                {                    
+                    res += str[i];
+                    i++;
                 }
-                else
-                {
-                    res += c;
-                }
+                int offset = 0;
+                if (m.Groups[1].Success) offset = 65;
+                if (m.Groups[2].Success) offset = 97;
+                res += (char)((((letter + num) - offset) % 26) + offset);
+                i++;
             }
             return res;
         }
